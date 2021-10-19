@@ -1,4 +1,4 @@
 /home/alexis/nifi-1.13.2/fonline-processor/nifi-fonline-processors/src/main/java/com/fonline/claro/processors/fonline/FacturaOnline.java
 /home/alexis/nifi-1.13.2/fonline-processor/nifi-fonline-processors/src/main/java/com/fonline/claro/processors/fonline/entity/BillingDetail.java
 /home/alexis/nifi-1.13.2/fonline-processor/nifi-fonline-processors/src/main/java/com/fonline/claro/processors/fonline/functions/Functions.java
-/home/alexis/nifi-1.13.2/fonline-processor/nifi-fonline-processors/src/main/java/com/fonline/claro/processors/fonline/entity/Archivo.java
+/home/alexis/nifi-1.13.2/fonline-processor/nifi-fonline-processors/src/main/java/com/fonline/claro/processors/fonline/entity/BillingList.java

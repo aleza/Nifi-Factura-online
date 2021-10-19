@@ -27,7 +27,13 @@ public class BillingDetail {
 
     @Override
     public String toString(){
-        return WBD_ACC_ID +"|"+ WBD_DUE_DATE;
+        return  WBD_DUE_DATE +"|"+
+                WBD_ACC_ID +"|"+
+                WBD_SUMMARY_TYPE +"|"+
+                WBD_TYPE +"|"+
+                WBD_CHARGE_DESCRIPTION +"|"+
+                WBD_TOTAL_AMOUNT +"|"+
+                WBD_CLU_BILL_NUMBER;
     }
 
 }

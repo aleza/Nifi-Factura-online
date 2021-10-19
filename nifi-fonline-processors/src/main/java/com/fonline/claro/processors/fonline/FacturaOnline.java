@@ -17,10 +17,9 @@
 package com.fonline.claro.processors.fonline;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fonline.claro.processors.fonline.entity.Archivo;
 import com.fonline.claro.processors.fonline.entity.BillingDetail;
+import com.fonline.claro.processors.fonline.entity.BillingList;
 import com.fonline.claro.processors.fonline.functions.Functions;
-import com.opencsv.CSVWriter;
 import org.apache.nifi.components.PropertyDescriptor;
 import org.apache.nifi.flowfile.FlowFile;
 import org.apache.nifi.annotation.behavior.ReadsAttribute;
@@ -46,7 +45,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.regex.Pattern;
 
 
 @Tags({"example"})
@@ -124,13 +122,16 @@ public class FacturaOnline extends AbstractProcessor {
 
                     // Extract fields out of input
                     Map<String, String> extracted = extractFields(input);
-                    //String csvFile = formatCsv(input);
-                    BillingDetail archivo = formatCsv(input);
+                    //BillingDetail archivo = formatCsv(input);
+                    BillingList archivoL = formatCsv(input);
 
 
                     // Write json bytes into output
                     //out.write(objectMapper.writeValueAsBytes(extracted));
-                    out.write(objectMapper.writeValueAsBytes(archivo.toString()));
+
+                    out.write(objectMapper.writeValueAsBytes(archivoL.toString()));
+
+
                     //out.write(Integer.parseInt(objectMapper.writeValueAsString(archivo)));
                 }
             });
@@ -154,13 +155,13 @@ public class FacturaOnline extends AbstractProcessor {
         return extracted;
     }
 
-    private BillingDetail formatCsv(byte[] input){
+    //private BillingDetail formatCsv(byte[] input){
+    private BillingList formatCsv(byte[] input){
 
+        BillingList billingList = new BillingList();
+        ArrayList<BillingDetail> billingDetails = new ArrayList<BillingDetail>();
         Functions functions = new Functions();
-        BillingDetail billingDetail = new BillingDetail();
 
-
-        Archivo archivo = new Archivo();
         String inputString = new String(input, StandardCharsets.UTF_8);
 
         int inicio = 0;
@@ -170,6 +171,8 @@ public class FacturaOnline extends AbstractProcessor {
 
         for (int i = 0; i < inputString.length(); i++) {
 
+            BillingDetail billingDetail = new BillingDetail();
+
             try {
                 renglon = inputString.substring(inicio, corte);
                 inicio = corte + 1;
@@ -178,31 +181,49 @@ public class FacturaOnline extends AbstractProcessor {
                 renglon = inputString.substring(inicio, inputString.length());
                 i = inputString.length();
             }
-            //System.out.println("renglon " + renglon);
-            if(renglon.contains("RES010D")){
-                despuesCodigo = renglon.indexOf(" ");
-                //System.out.println("A veeer " + renglon.substring(despuesCodigo, renglon.length()));
-                archivo.setRenglon1(renglon.substring(despuesCodigo, renglon.length()));
 
-            }else if(renglon.contains("CTI000D")){
-                despuesCodigo = renglon.indexOf(" ");
-                //System.out.println("A veeer " + renglon.substring(despuesCodigo, renglon.length()));
-                archivo.setRenglon2(renglon.substring(despuesCodigo, renglon.length()));
-
-            }else if(renglon.contains("FAC040D")){
-                despuesCodigo = renglon.indexOf(" ");
-               // System.out.println("A veeer " + renglon.substring(despuesCodigo, renglon.length()));
-                archivo.setRenglon3(renglon.substring(despuesCodigo, renglon.length()));
-
-            }else if(renglon.contains("CLT000D")){
+            if(renglon.contains("CLT000D")){
                 despuesCodigo = renglon.indexOf(" ");
                 functions.getCLT000DValues(renglon, billingDetail, despuesCodigo);
-            }
-        }
 
-        //return inputString;
-        //return archivo;
-        return billingDetail;
+            }else if(renglon.contains("RES010D")){
+                despuesCodigo = renglon.indexOf(" ");
+                billingDetail.setWBD_PRINT_DATE(renglon.substring(despuesCodigo, despuesCodigo + 10));
+
+            }else if(renglon.contains("FAC010D")){
+                despuesCodigo = renglon.indexOf(" ");
+                functions.getFAC010DValues(renglon, billingDetail, despuesCodigo);
+
+            }else if(renglon.contains("RES040D")){
+                despuesCodigo = renglon.indexOf(" ");
+                functions.getRES040DValues(renglon, billingDetail, despuesCodigo);
+
+            }else if(renglon.contains("FAC250D")){
+                despuesCodigo = renglon.indexOf(" ");
+                functions.getFAC250DValues(renglon, billingDetail, despuesCodigo);
+
+            }else if(renglon.contains("RES040T")){
+                despuesCodigo = renglon.indexOf(" ");
+                functions.getRES040TValues(renglon, billingDetail, despuesCodigo);
+
+            }else if(renglon.contains("FAC299T")){
+                despuesCodigo = renglon.indexOf(" ");
+                functions.getFAC299TValues(renglon, billingDetail, despuesCodigo);
+
+            }else if(renglon.contains("RES045T")){
+                despuesCodigo = renglon.indexOf(" ");
+                functions.getRES045TValues(renglon, billingDetail, despuesCodigo);
+
+            }else if(renglon.contains("RES045D")){
+                despuesCodigo = renglon.indexOf(" ");
+                functions.getRES045DValues(renglon, billingDetail, despuesCodigo);
+
+            }
+            billingDetails.add(billingDetail);
+        }
+        billingList.setBillingDetails(billingDetails);
+        //return billingDetail;
+        return billingList;
     }
 
 }
