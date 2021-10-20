@@ -12,21 +12,13 @@ public class Functions {
         //mutable BillingDetail outTuple = {};
 
         // Inicializa estos dos valores que utilizaran todas las tuplas.
-        //outTuple.WBD_DUE_DATE = (rstring)substring(line, base + 29, 10) ;
         billingDetail.setWBD_DUE_DATE(registro.substring(despuesCodigo + 29, despuesCodigo + 39));
-        //outTuple.WBD_ACC_ID = (rstring)trim(substring(line, base + 3, 10), (ustring)" ") ;
         billingDetail.setWBD_ACC_ID(registro.substring(despuesCodigo + 3, despuesCodigo + 13));
-
-        //outTuple.WBD_SUMMARY_TYPE = "R" ;
         billingDetail.setWBD_SUMMARY_TYPE("R");
-        //outTuple.WBD_TYPE = "R";
         billingDetail.setWBD_TYPE("R");
-        //outTuple.WBD_CHARGE_DESCRIPTION = "Total a Pagar" ;
         billingDetail.setWBD_CHARGE_DESCRIPTION("Total a Pagar");
-        //outTuple.WBD_TOTAL_AMOUNT = getAmountOrPriceLen16(line, 13);
         billingDetail.setWBD_TOTAL_AMOUNT(registro.substring(despuesCodigo + 13, despuesCodigo + 28));
 
-        //return outTuple;
         return billingDetail;
     }
 
@@ -102,4 +94,51 @@ public class Functions {
         return billingDetail;
     }
 
+    public BillingDetail getFAC300TValues(String registro, BillingDetail billingDetail, int despuesCodigo) {
+
+        billingDetail.setWBD_SUMMARY_TYPE("C");
+        billingDetail.setWBD_TYPE("R");
+        billingDetail.setWBD_CHARGE_DESCRIPTION(registro.substring(despuesCodigo + 1, despuesCodigo + 21));
+        billingDetail.setWBD_AMOUNT(registro.substring(despuesCodigo + 21, despuesCodigo + 37));
+
+        return billingDetail;
+    }
+
+    public BillingDetail getFAC200TValues(String registro, BillingDetail billingDetail, int despuesCodigo) {
+
+        billingDetail.setWBD_CHARGE_DESCRIPTION(registro.substring(despuesCodigo + 1, despuesCodigo + 21));
+        billingDetail.setWBD_AMOUNT(registro.substring(despuesCodigo + 21, despuesCodigo + 37));
+        billingDetail.setWBD_TYPE("D");
+        billingDetail.setWBD_CLU_BILL_NUMBER("");
+
+        return billingDetail;
+    }
+    public BillingDetail getFACXXXDValues(String registro, BillingDetail billingDetail, int despuesCodigo) {
+
+        if(registro.contains("FAC040D")){
+            billingDetail.setWBD_CHARGE_TYPE("Cargos Fijos");
+        }else if(registro.contains("FAC050D")){
+            billingDetail.setWBD_CHARGE_TYPE("Cargos Variables");
+        }else if(registro.contains("FAC110D")){
+            billingDetail.setWBD_CHARGE_TYPE("Otros Cargos");
+        }
+        billingDetail.setWBD_TYPE("D");
+        billingDetail.setWBD_CHARGE_DESCRIPTION(registro.substring(despuesCodigo + 1, despuesCodigo + 71));
+        billingDetail.setWBD_UNIT_PRICE(registro.substring(despuesCodigo + 94, despuesCodigo + 105));
+        billingDetail.setWBD_AMOUNT(registro.substring(despuesCodigo + 105, despuesCodigo + 114));
+        billingDetail.setWBD_QTY(registro.substring(despuesCodigo + 71, despuesCodigo + 84));
+
+        return billingDetail;
+    }
+    public BillingDetail getFAC120DValues(String registro, BillingDetail billingDetail, int despuesCodigo) {
+
+        billingDetail.setWBD_CHARGE_DESCRIPTION(registro.substring(despuesCodigo + 1, despuesCodigo + 71));
+        billingDetail.setWBD_UNIT_PRICE(registro.substring(despuesCodigo + 92, despuesCodigo + 103));
+        billingDetail.setWBD_QTY(registro.substring(despuesCodigo + 71, despuesCodigo + 82));
+        billingDetail.setWBD_AMOUNT(registro.substring(despuesCodigo + 103, despuesCodigo + 119));
+        billingDetail.setWBD_TYPE("D");
+        billingDetail.setWBD_CHARGE_TYPE("Cargos Variables");
+
+        return billingDetail;
+    }
 }

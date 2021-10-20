@@ -27,13 +27,22 @@ public class BillingDetail {
 
     @Override
     public String toString(){
-        return  WBD_DUE_DATE +"|"+
-                WBD_ACC_ID +"|"+
-                WBD_SUMMARY_TYPE +"|"+
-                WBD_TYPE +"|"+
-                WBD_CHARGE_DESCRIPTION +"|"+
-                WBD_TOTAL_AMOUNT +"|"+
-                WBD_CLU_BILL_NUMBER;
+        return  "\'" + WBD_ACC_ID +"\'"+","+
+                "\'" + WBD_PRINT_DATE +"\'"+","+
+                "\'" + WBD_DUE_DATE +"\'"+","+
+                "\'" + WBD_FILENAME +"\'"+","+
+                "\'" + WBD_CLU_BILL_NUMBER +"\'"+","+
+                "\'" + WBD_LINE_ORDER +"\'"+","+
+                "\'" + WBD_CHARGE_TYPE +"\'"+","+
+                "\'" + WBD_SUMMARY_TYPE +"\'"+","+
+                "\'" + WBD_CHARGE_DESCRIPTION +"\'"+","+
+                "\'" + WBD_UNIT_PRICE +"\'"+","+
+                "\'" + WBD_QTY +"\'"+","+
+                "\'" + WBD_AMOUNT +"\'"+","+
+                "\'" + WBD_TOTAL_AMOUNT +"\'"+","+
+                "\'" + WBD_BILL_NUMBER_INSTALMENT +"\'"+","+
+                "\'" + WBD_DESCRIPTION_DATE +"\'"+","+
+                "\'" + WBD_TYPE +"\'" + "''";
     }
 
 }
