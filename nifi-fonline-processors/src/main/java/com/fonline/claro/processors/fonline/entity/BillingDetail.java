@@ -42,7 +42,7 @@ public class BillingDetail {
                 "\'" + WBD_TOTAL_AMOUNT +"\'"+","+
                 "\'" + WBD_BILL_NUMBER_INSTALMENT +"\'"+","+
                 "\'" + WBD_DESCRIPTION_DATE +"\'"+","+
-                "\'" + WBD_TYPE +"\'" + "''";
+                "\'" + WBD_TYPE +"\'"+"\n";
     }
 
 }

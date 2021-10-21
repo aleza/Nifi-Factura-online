@@ -1,4 +1,5 @@
 com/fonline/claro/processors/fonline/FacturaOnline.class
+com/fonline/claro/processors/fonline/entity/BillingDetailBac.class
 com/fonline/claro/processors/fonline/entity/BillingList.class
 com/fonline/claro/processors/fonline/entity/BillingDetail.class
 com/fonline/claro/processors/fonline/functions/Functions.class

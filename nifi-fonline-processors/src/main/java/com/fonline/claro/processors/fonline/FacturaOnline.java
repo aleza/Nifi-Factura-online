@@ -18,8 +18,10 @@ package com.fonline.claro.processors.fonline;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fonline.claro.processors.fonline.entity.BillingDetail;
+import com.fonline.claro.processors.fonline.entity.BillingDetailBac;
 import com.fonline.claro.processors.fonline.entity.BillingList;
 import com.fonline.claro.processors.fonline.functions.Functions;
+import org.apache.commons.lang3.SerializationUtils;
 import org.apache.nifi.components.PropertyDescriptor;
 import org.apache.nifi.flowfile.FlowFile;
 import org.apache.nifi.annotation.behavior.ReadsAttribute;
@@ -168,10 +170,12 @@ public class FacturaOnline extends AbstractProcessor {
         int corte = inputString.indexOf("\n");
         String renglon = "";
         int despuesCodigo = 0;
+        int paso = 0;
+
+        BillingDetail billingDetail = new BillingDetail();
+        BillingDetailBac billingDetailBac = new BillingDetailBac();
 
         for (int i = 0; i < inputString.length(); i++) {
-
-            BillingDetail billingDetail = new BillingDetail();
 
             try {
                 renglon = inputString.substring(inicio, corte);
@@ -182,61 +186,92 @@ public class FacturaOnline extends AbstractProcessor {
                 i = inputString.length();
             }
 
+            //BillingDetail billingDetail = new BillingDetail();
+
+            //Ver
+            billingDetail.setWBD_FILENAME("z3_2026_36126.dat");
+
             if(renglon.contains("CLT000D")){
                 despuesCodigo = renglon.indexOf(" ");
                 functions.getCLT000DValues(renglon, billingDetail, despuesCodigo);
-                billingDetails.add(billingDetail);
+                //paso ++;
             }else if(renglon.contains("RES010D")){
                 despuesCodigo = renglon.indexOf(" ");
-                billingDetail.setWBD_PRINT_DATE(renglon.substring(despuesCodigo, despuesCodigo + 10));
-                billingDetails.add(billingDetail);
+                billingDetail.setWBD_PRINT_DATE(renglon.substring(despuesCodigo + 1, despuesCodigo + 11));
+                paso ++;
             }else if(renglon.contains("FAC010D")){
                 despuesCodigo = renglon.indexOf(" ");
-                functions.getFAC010DValues(renglon, billingDetail, despuesCodigo);
-                billingDetails.add(billingDetail);
+                functions.getFAC010DValues(renglon, billingDetail, despuesCodigo, billingDetailBac);
+                //paso ++;
             }else if(renglon.contains("RES040D")){
                 despuesCodigo = renglon.indexOf(" ");
-                functions.getRES040DValues(renglon, billingDetail, despuesCodigo);
-
+                functions.getRES040DValues(renglon, billingDetail, despuesCodigo, billingDetailBac);
+                paso ++;
             }else if(renglon.contains("FAC250D")){
                 despuesCodigo = renglon.indexOf(" ");
-                functions.getFAC250DValues(renglon, billingDetail, despuesCodigo);
-                billingDetails.add(billingDetail);
+                functions.getFAC250DValues(renglon, billingDetail, despuesCodigo, billingDetailBac);
+                paso ++;
             }else if(renglon.contains("RES040T")){
                 despuesCodigo = renglon.indexOf(" ");
                 functions.getRES040TValues(renglon, billingDetail, despuesCodigo);
-                billingDetails.add(billingDetail);
+                paso ++;
             }else if(renglon.contains("FAC299T")){
                 despuesCodigo = renglon.indexOf(" ");
                 functions.getFAC299TValues(renglon, billingDetail, despuesCodigo);
-                billingDetails.add(billingDetail);
+                paso ++;
             }else if(renglon.contains("RES045T")){
                 despuesCodigo = renglon.indexOf(" ");
                 functions.getRES045TValues(renglon, billingDetail, despuesCodigo);
-                billingDetails.add(billingDetail);
+                paso ++;
             }else if(renglon.contains("RES045D")){
                 despuesCodigo = renglon.indexOf(" ");
                 functions.getRES045DValues(renglon, billingDetail, despuesCodigo);
-                billingDetails.add(billingDetail);
+                paso ++;
             }else if(renglon.contains("FAC200T")){
                 despuesCodigo = renglon.indexOf(" ");
                 functions.getFAC200TValues(renglon, billingDetail, despuesCodigo);
-                billingDetails.add(billingDetail);
+                paso ++;
             }else if(renglon.contains("FAC040D") ||
                      renglon.contains("FAC050D") ||
                      renglon.contains("FAC110D")){
                 despuesCodigo = renglon.indexOf(" ");
                 functions.getFACXXXDValues(renglon, billingDetail, despuesCodigo);
-                billingDetails.add(billingDetail);
+                paso ++;
             }else if(renglon.contains("FAC120D")){
                 despuesCodigo = renglon.indexOf(" ");
                 functions.getFAC120DValues(renglon, billingDetail, despuesCodigo);
-                billingDetails.add(billingDetail);
+                paso ++;
             }else if(renglon.contains("FAC300T")){
                 despuesCodigo = renglon.indexOf(" ");
                 functions.getFAC300TValues(renglon, billingDetail, despuesCodigo);
-                billingDetails.add(billingDetail);
+                paso ++;
             }
+
+            if(paso > 0){
+                paso=0;
+                billingDetails.add(billingDetail);
+
+
+                billingDetailBac.setWBD_AMOUNT(billingDetail.getWBD_AMOUNT());
+                billingDetailBac.setWBD_PRINT_DATE(billingDetail.getWBD_PRINT_DATE());
+                billingDetailBac.setWBD_BILL_NUMBER_INSTALMENT(billingDetail.getWBD_BILL_NUMBER_INSTALMENT());
+                billingDetailBac.setWBD_CHARGE_DESCRIPTION(billingDetail.getWBD_CHARGE_DESCRIPTION());
+                billingDetailBac.setWBD_CLU_BILL_NUMBER(billingDetail.getWBD_CLU_BILL_NUMBER());
+                billingDetailBac.setWBD_FILENAME(billingDetail.getWBD_FILENAME());
+                billingDetailBac.setWBD_CHARGE_TYPE(billingDetail.getWBD_CHARGE_TYPE());
+                billingDetailBac.setWBD_DUE_DATE(billingDetail.getWBD_DUE_DATE());
+                billingDetailBac.setWBD_DESCRIPTION_DATE(billingDetail.getWBD_DESCRIPTION_DATE());
+                billingDetailBac.setWBD_PRINT_DATE(billingDetail.getWBD_PRINT_DATE());
+                billingDetailBac.setWBD_QTY(billingDetail.getWBD_QTY());
+                billingDetailBac.setWBD_TYPE(billingDetail.getWBD_TYPE());
+                billingDetailBac.setWBD_UNIT_PRICE(billingDetail.getWBD_UNIT_PRICE());
+                billingDetailBac.setWBD_TOTAL_AMOUNT(billingDetail.getWBD_TOTAL_AMOUNT());
+                billingDetailBac.setWBD_SUMMARY_TYPE(billingDetail.getWBD_SUMMARY_TYPE());
+                billingDetailBac.setWBD_LINE_ORDER(billingDetail.getWBD_LINE_ORDER());
+
+                billingDetail = new BillingDetail();
+            }
+
         }
         billingList.setBillingDetails(billingDetails);
         return billingList;

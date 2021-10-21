@@ -1,7 +1,7 @@
 package com.fonline.claro.processors.fonline.functions;
 
 import com.fonline.claro.processors.fonline.entity.BillingDetail;
-
+import com.fonline.claro.processors.fonline.entity.BillingDetailBac;
 
 
 public class Functions {
@@ -22,14 +22,18 @@ public class Functions {
         return billingDetail;
     }
 
-    public BillingDetail getFAC010DValues(String registro, BillingDetail billingDetail, int despuesCodigo) {
+    public BillingDetail getFAC010DValues(String registro, BillingDetail billingDetail, int despuesCodigo, BillingDetailBac billingDetailBac) {
+
+        billingDetail.setWBD_ACC_ID(billingDetailBac.getWBD_ACC_ID());
 
         billingDetail.setWBD_CLU_BILL_NUMBER(registro.substring(despuesCodigo + 49, despuesCodigo + 64) + "- ");
 
         return billingDetail;
     }
 
-    public BillingDetail getRES040DValues(String registro, BillingDetail billingDetail, int despuesCodigo) {
+    public BillingDetail getRES040DValues(String registro, BillingDetail billingDetail, int despuesCodigo, BillingDetailBac billingDetailBac) {
+
+        billingDetail.setWBD_ACC_ID(billingDetailBac.getWBD_ACC_ID());
 
         billingDetail.setWBD_SUMMARY_TYPE("R");
         billingDetail.setWBD_TYPE("R");
@@ -41,7 +45,9 @@ public class Functions {
         return billingDetail;
     }
 
-    public BillingDetail getFAC250DValues(String registro, BillingDetail billingDetail, int despuesCodigo) {
+    public BillingDetail getFAC250DValues(String registro, BillingDetail billingDetail, int despuesCodigo, BillingDetailBac billingDetailBac) {
+
+        billingDetail.setWBD_ACC_ID(billingDetailBac.getWBD_ACC_ID());
 
         billingDetail.setWBD_SUMMARY_TYPE("R");
         billingDetail.setWBD_TYPE("R");
@@ -55,6 +61,8 @@ public class Functions {
 
     public BillingDetail getRES040TValues(String registro, BillingDetail billingDetail, int despuesCodigo) {
 
+        //billingDetail.setWBD_ACC_ID(billingDetail.getWBD_ACC_ID());
+
         billingDetail.setWBD_SUMMARY_TYPE("R");
         billingDetail.setWBD_TYPE("R");
         billingDetail.setWBD_CHARGE_DESCRIPTION("Total Resumen de Cuenta");
@@ -64,6 +72,8 @@ public class Functions {
     }
 
     public BillingDetail getFAC299TValues(String registro, BillingDetail billingDetail, int despuesCodigo) {
+
+        //billingDetail.setWBD_ACC_ID(billingDetail.getWBD_ACC_ID());
 
         billingDetail.setWBD_SUMMARY_TYPE("R");
         billingDetail.setWBD_TYPE("R");
@@ -75,6 +85,8 @@ public class Functions {
 
     public BillingDetail getRES045TValues(String registro, BillingDetail billingDetail, int despuesCodigo) {
 
+        //billingDetail.setWBD_ACC_ID(billingDetail.getWBD_ACC_ID());
+
         billingDetail.setWBD_SUMMARY_TYPE("C");
         billingDetail.setWBD_TYPE("R");
         billingDetail.setWBD_CHARGE_DESCRIPTION("Total Cuota de Equipo");
@@ -84,6 +96,8 @@ public class Functions {
     }
 
     public BillingDetail getRES045DValues(String registro, BillingDetail billingDetail, int despuesCodigo) {
+
+        //billingDetail.setWBD_ACC_ID(billingDetail.getWBD_ACC_ID());
 
         billingDetail.setWBD_SUMMARY_TYPE("C");
         billingDetail.setWBD_TYPE("R");
@@ -96,6 +110,8 @@ public class Functions {
 
     public BillingDetail getFAC300TValues(String registro, BillingDetail billingDetail, int despuesCodigo) {
 
+        //billingDetail.setWBD_ACC_ID(billingDetail.getWBD_ACC_ID());
+
         billingDetail.setWBD_SUMMARY_TYPE("C");
         billingDetail.setWBD_TYPE("R");
         billingDetail.setWBD_CHARGE_DESCRIPTION(registro.substring(despuesCodigo + 1, despuesCodigo + 21));
@@ -105,6 +121,8 @@ public class Functions {
     }
 
     public BillingDetail getFAC200TValues(String registro, BillingDetail billingDetail, int despuesCodigo) {
+
+        //billingDetail.setWBD_ACC_ID(billingDetail.getWBD_ACC_ID());
 
         billingDetail.setWBD_CHARGE_DESCRIPTION(registro.substring(despuesCodigo + 1, despuesCodigo + 21));
         billingDetail.setWBD_AMOUNT(registro.substring(despuesCodigo + 21, despuesCodigo + 37));
@@ -122,6 +140,8 @@ public class Functions {
         }else if(registro.contains("FAC110D")){
             billingDetail.setWBD_CHARGE_TYPE("Otros Cargos");
         }
+        //billingDetail.setWBD_ACC_ID(billingDetail.getWBD_ACC_ID());
+
         billingDetail.setWBD_TYPE("D");
         billingDetail.setWBD_CHARGE_DESCRIPTION(registro.substring(despuesCodigo + 1, despuesCodigo + 71));
         billingDetail.setWBD_UNIT_PRICE(registro.substring(despuesCodigo + 94, despuesCodigo + 105));
@@ -131,6 +151,8 @@ public class Functions {
         return billingDetail;
     }
     public BillingDetail getFAC120DValues(String registro, BillingDetail billingDetail, int despuesCodigo) {
+
+        //billingDetail.setWBD_ACC_ID(billingDetail.getWBD_ACC_ID());
 
         billingDetail.setWBD_CHARGE_DESCRIPTION(registro.substring(despuesCodigo + 1, despuesCodigo + 71));
         billingDetail.setWBD_UNIT_PRICE(registro.substring(despuesCodigo + 92, despuesCodigo + 103));
