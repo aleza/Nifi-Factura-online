@@ -13,7 +13,7 @@ public class BillingDetail {
     private String WBD_DUE_DATE;
     private String WBD_FILENAME;
     private String WBD_CLU_BILL_NUMBER;
-    private BigInteger WBD_LINE_ORDER;
+    private int WBD_LINE_ORDER;
     private String WBD_CHARGE_TYPE;
     private String WBD_SUMMARY_TYPE;
     private String WBD_CHARGE_DESCRIPTION;
@@ -31,8 +31,8 @@ public class BillingDetail {
                 "\'" + WBD_PRINT_DATE +"\'"+","+
                 "\'" + WBD_DUE_DATE +"\'"+","+
                 "\'" + WBD_FILENAME +"\'"+","+
-                "\'" + WBD_CLU_BILL_NUMBER +"\'"+","+
-                "\'" + WBD_LINE_ORDER +"\'"+","+
+                "\'" + WBD_CLU_BILL_NUMBER +"\'"+","
+                     + WBD_LINE_ORDER +","+
                 "\'" + WBD_CHARGE_TYPE +"\'"+","+
                 "\'" + WBD_SUMMARY_TYPE +"\'"+","+
                 "\'" + WBD_CHARGE_DESCRIPTION +"\'"+","+
