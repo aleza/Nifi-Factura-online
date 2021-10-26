@@ -3,7 +3,9 @@ package com.fonline.claro.processors.fonline.functions;
 import com.fonline.claro.processors.fonline.entity.BillingDetail;
 import com.fonline.claro.processors.fonline.entity.BillingDetailBac;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.DecimalFormat;
 
 
 public class Functions {
@@ -60,8 +62,11 @@ public class Functions {
 
         billingDetail.setWBD_SUMMARY_TYPE("R");
         billingDetail.setWBD_TYPE("R");
-        billingDetail.setWBD_CHARGE_DESCRIPTION(registro.substring(despuesCodigo + 11, despuesCodigo + 81));
-        billingDetail.setWBD_UNIT_PRICE(registro.substring(despuesCodigo + 91, despuesCodigo + 107));
+        billingDetail.setWBD_CHARGE_DESCRIPTION(trimSpaces(registro.substring(despuesCodigo + 11, despuesCodigo + 81)));
+        //formatValue
+        billingDetail.setWBD_UNIT_PRICE(formatValue(registro.substring(despuesCodigo + 91, despuesCodigo + 107)));
+        //billingDetail.setWBD_UNIT_PRICE(registro.substring(despuesCodigo + 91, despuesCodigo + 107));
+
         billingDetail.setWBD_AMOUNT(registro.substring(despuesCodigo + 91, despuesCodigo + 107));
         billingDetail.setWBD_DESCRIPTION_DATE(registro.substring(despuesCodigo + 1, despuesCodigo + 11));
 
@@ -223,6 +228,23 @@ public class Functions {
         billingDetail.setWBD_CHARGE_TYPE("Cargos Variables");
 
         return billingDetail;
+    }
+
+    public String formatValue(String numeroConSigno){
+
+        String numeroSinSigno = numeroConSigno.substring(0,15);
+        String signo = numeroConSigno.substring(15, 16);
+        BigDecimal numeroConComa = new BigDecimal(numeroSinSigno);
+        numeroConComa = numeroConComa.divide(BigDecimal.valueOf(100));
+        DecimalFormat formatter = new DecimalFormat("##.00");
+        String valor = formatter.format(numeroConComa);
+        String valorConSigno = (signo.equals("-"))?signo.concat(valor):valor;
+
+        return valorConSigno;
+    }
+
+    public String trimSpaces(String entrada){
+        return entrada.trim();
     }
 
 }
