@@ -168,9 +168,11 @@ public class FacturaOnline extends AbstractProcessor {
         String inputString = new String(input, StandardCharsets.UTF_8);
 
         int inicio = 0;
-        int corte = inputString.indexOf("\n");
+        //int corte = inputString.indexOf("\n");
+        int corte = 150;
         String renglon = "";
-        int despuesCodigo = 0;
+        //int despuesCodigo = 0;
+        int despuesCodigo = 7;
         int paso = 0;
         int index = 0;
 
@@ -195,69 +197,69 @@ public class FacturaOnline extends AbstractProcessor {
 
             if (renglon.contains("CLT000D")) {
                 index = 0;
-                despuesCodigo = renglon.indexOf(" ");
+                //despuesCodigo = renglon.indexOf(" ");
                 functions.getCLT000DValues(renglon, billingDetail, despuesCodigo);
                 cargaBac(billingDetail, billingDetailBac);
                 //paso ++;
             } else if (renglon.contains("RES010D")) {
-                despuesCodigo = renglon.indexOf(" ");
+                //despuesCodigo = renglon.indexOf(" ");
                 functions.getRES010DValues(renglon, billingDetail, despuesCodigo, billingDetailBac);
                 cargaBac(billingDetail, billingDetailBac);
                 paso++;
             } else if (renglon.contains("FAC010D")) {
-                despuesCodigo = renglon.indexOf(" ");
+                //despuesCodigo = renglon.indexOf(" ");
                 functions.getFAC010DValues(renglon, billingDetail, despuesCodigo, billingDetailBac);
                 cargaBac(billingDetail, billingDetailBac);
                 //paso ++;
             } else if (renglon.contains("RES040D")) {
-                despuesCodigo = renglon.indexOf(" ");
+                //despuesCodigo = renglon.indexOf(" ");
                 functions.getRES040DValues(renglon, billingDetail, despuesCodigo, billingDetailBac);
                 cargaBac(billingDetail, billingDetailBac);
                 paso++;
             } else if (renglon.contains("FAC250D")) {
-                despuesCodigo = renglon.indexOf(" ");
+                //despuesCodigo = renglon.indexOf(" ");
                 functions.getFAC250DValues(renglon, billingDetail, despuesCodigo, billingDetailBac);
                 cargaBac(billingDetail, billingDetailBac);
                 paso++;
             } else if (renglon.contains("RES040T")) {
-                despuesCodigo = renglon.indexOf(" ");
+                //despuesCodigo = renglon.indexOf(" ");
                 functions.getRES040TValues(renglon, billingDetail, despuesCodigo, billingDetailBac);
                 cargaBac(billingDetail, billingDetailBac);
                 paso++;
             } else if (renglon.contains("FAC299T")) {
-                despuesCodigo = renglon.indexOf(" ");
+                //despuesCodigo = renglon.indexOf(" ");
                 functions.getFAC299TValues(renglon, billingDetail, despuesCodigo, billingDetailBac);
                 cargaBac(billingDetail, billingDetailBac);
                 paso++;
             } else if (renglon.contains("RES045T")) {
-                despuesCodigo = renglon.indexOf(" ");
+                //despuesCodigo = renglon.indexOf(" ");
                 functions.getRES045TValues(renglon, billingDetail, despuesCodigo, billingDetailBac);
                 cargaBac(billingDetail, billingDetailBac);
                 paso++;
             } else if (renglon.contains("RES045D")) {
-                despuesCodigo = renglon.indexOf(" ");
+                //despuesCodigo = renglon.indexOf(" ");
                 functions.getRES045DValues(renglon, billingDetail, despuesCodigo, billingDetailBac);
                 cargaBac(billingDetail, billingDetailBac);
                 paso++;
             } else if (renglon.contains("FAC200T")) {
-                despuesCodigo = renglon.indexOf(" ");
+                //despuesCodigo = renglon.indexOf(" ");
                 functions.getFAC200TValues(renglon, billingDetail, despuesCodigo, billingDetailBac);
                 cargaBac(billingDetail, billingDetailBac);
                 paso++;
             } else if (renglon.contains("FAC040D") ||
                     renglon.contains("FAC050D") ||
                     renglon.contains("FAC110D")) {
-                despuesCodigo = renglon.indexOf(" ");
+                //despuesCodigo = renglon.indexOf(" ");
                 functions.getFACXXXDValues(renglon, billingDetail, despuesCodigo, billingDetailBac);
                 cargaBac(billingDetail, billingDetailBac);
                 paso++;
             } else if (renglon.contains("FAC120D")) {
-                despuesCodigo = renglon.indexOf(" ");
+                //despuesCodigo = renglon.indexOf(" ");
                 functions.getFAC120DValues(renglon, billingDetail, despuesCodigo, billingDetailBac);
                 cargaBac(billingDetail, billingDetailBac);
                 paso++;
             } else if (renglon.contains("FAC300T")) {
-                despuesCodigo = renglon.indexOf(" ");
+                //despuesCodigo = renglon.indexOf(" ");
                 functions.getFAC300TValues(renglon, billingDetail, despuesCodigo, billingDetailBac);
                 cargaBac(billingDetail, billingDetailBac);
                 paso++;
@@ -265,7 +267,7 @@ public class FacturaOnline extends AbstractProcessor {
 
             if (paso > 0) {
                 paso = 0;
-                index ++;
+                index++;
                 billingDetail.setWBD_LINE_ORDER(index);
                 billingDetails.add(billingDetail);
                 billingDetail = new BillingDetail();

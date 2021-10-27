@@ -4,7 +4,6 @@ import com.fonline.claro.processors.fonline.entity.BillingDetail;
 import com.fonline.claro.processors.fonline.entity.BillingDetailBac;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.text.DecimalFormat;
 
 
@@ -25,6 +24,11 @@ public class Functions {
 
         billingDetail.setWBD_CLU_BILL_NUMBER("");
         billingDetail.setWBD_CHARGE_TYPE("");
+        billingDetail.setWBD_UNIT_PRICE(formatValue("0 ",2));
+        billingDetail.setWBD_QTY(formatValue("0 ",2));
+        billingDetail.setWBD_AMOUNT(formatValue("0 ",2));
+        billingDetail.setWBD_BILL_NUMBER_INSTALMENT("");
+        billingDetail.setWBD_DESCRIPTION_DATE("");
 
         return billingDetail;
     }
@@ -46,7 +50,7 @@ public class Functions {
         billingDetail.setWBD_CHARGE_TYPE(billingDetailBac.getBillingDetail().getWBD_CHARGE_TYPE());
 
         if(registro.substring(despuesCodigo + 49, despuesCodigo + 64) != null){
-            billingDetail.setWBD_CLU_BILL_NUMBER(registro.substring(despuesCodigo + 49, despuesCodigo + 64));
+            billingDetail.setWBD_CLU_BILL_NUMBER(trimSpaces(registro.substring(despuesCodigo + 49, despuesCodigo + 64)));
         }
 
         return billingDetail;
@@ -64,7 +68,8 @@ public class Functions {
         billingDetail.setWBD_TYPE("R");
         billingDetail.setWBD_CHARGE_DESCRIPTION(trimSpaces(registro.substring(despuesCodigo + 11, despuesCodigo + 81)));
         //formatValue
-        billingDetail.setWBD_UNIT_PRICE(formatValue(registro.substring(despuesCodigo + 91, despuesCodigo + 107)));
+        billingDetail.setWBD_UNIT_PRICE(formatValue(registro.substring(despuesCodigo + 91, despuesCodigo + 107), 16));
+
         //billingDetail.setWBD_UNIT_PRICE(registro.substring(despuesCodigo + 91, despuesCodigo + 107));
 
         billingDetail.setWBD_AMOUNT(registro.substring(despuesCodigo + 91, despuesCodigo + 107));
@@ -84,7 +89,8 @@ public class Functions {
         billingDetail.setWBD_SUMMARY_TYPE("R");
         billingDetail.setWBD_TYPE("R");
         billingDetail.setWBD_CHARGE_DESCRIPTION(registro.substring(despuesCodigo + 1, despuesCodigo + 71));
-        billingDetail.setWBD_UNIT_PRICE(registro.substring(despuesCodigo + 92, despuesCodigo + 102));
+        billingDetail.setWBD_UNIT_PRICE(formatValue(registro.substring(despuesCodigo + 92, despuesCodigo + 102),10));
+        //billingDetail.setWBD_UNIT_PRICE(registro.substring(despuesCodigo + 92, despuesCodigo + 102));
         billingDetail.setWBD_QTY(registro.substring(despuesCodigo + 71, despuesCodigo + 81));
         billingDetail.setWBD_AMOUNT(registro.substring(despuesCodigo + 103, despuesCodigo + 119));
 
@@ -205,7 +211,8 @@ public class Functions {
 
         billingDetail.setWBD_TYPE("D");
         billingDetail.setWBD_CHARGE_DESCRIPTION(registro.substring(despuesCodigo + 1, despuesCodigo + 71));
-        billingDetail.setWBD_UNIT_PRICE(registro.substring(despuesCodigo + 94, despuesCodigo + 105));
+        billingDetail.setWBD_UNIT_PRICE(formatValue(registro.substring(despuesCodigo + 94, despuesCodigo + 104),10));
+        //billingDetail.setWBD_UNIT_PRICE(registro.substring(despuesCodigo + 94, despuesCodigo + 105));
         billingDetail.setWBD_AMOUNT(registro.substring(despuesCodigo + 105, despuesCodigo + 114));
         billingDetail.setWBD_QTY(registro.substring(despuesCodigo + 71, despuesCodigo + 84));
 
@@ -221,7 +228,8 @@ public class Functions {
         billingDetail.setWBD_PRINT_DATE(billingDetailBac.getBillingDetail().getWBD_PRINT_DATE());
 
         billingDetail.setWBD_CHARGE_DESCRIPTION(registro.substring(despuesCodigo + 1, despuesCodigo + 71));
-        billingDetail.setWBD_UNIT_PRICE(registro.substring(despuesCodigo + 92, despuesCodigo + 103));
+        billingDetail.setWBD_UNIT_PRICE(formatValue(registro.substring(despuesCodigo + 92, despuesCodigo + 103),11));
+        //billingDetail.setWBD_UNIT_PRICE(registro.substring(despuesCodigo + 92, despuesCodigo + 103));
         billingDetail.setWBD_QTY(registro.substring(despuesCodigo + 71, despuesCodigo + 82));
         billingDetail.setWBD_AMOUNT(registro.substring(despuesCodigo + 103, despuesCodigo + 119));
         billingDetail.setWBD_TYPE("D");
@@ -229,7 +237,7 @@ public class Functions {
 
         return billingDetail;
     }
-
+/*
     public String formatValue(String numeroConSigno){
 
         String numeroSinSigno = numeroConSigno.substring(0,15);
@@ -237,6 +245,19 @@ public class Functions {
         BigDecimal numeroConComa = new BigDecimal(numeroSinSigno);
         numeroConComa = numeroConComa.divide(BigDecimal.valueOf(100));
         DecimalFormat formatter = new DecimalFormat("##.00");
+        String valor = formatter.format(numeroConComa);
+        String valorConSigno = (signo.equals("-"))?signo.concat(valor):valor;
+
+        return valorConSigno;
+    }*/
+
+    public String formatValue(String numeroConSigno, int termina){
+
+        String numeroSinSigno = numeroConSigno.substring(0,termina - 1);
+        String signo = numeroConSigno.substring(termina - 1, termina);
+        BigDecimal numeroConComa = new BigDecimal(numeroSinSigno);
+        numeroConComa = numeroConComa.divide(BigDecimal.valueOf(100));
+        DecimalFormat formatter = new DecimalFormat("#0.0#");
         String valor = formatter.format(numeroConComa);
         String valorConSigno = (signo.equals("-"))?signo.concat(valor):valor;
 
