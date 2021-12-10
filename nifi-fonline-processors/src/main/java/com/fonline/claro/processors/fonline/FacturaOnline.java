@@ -21,31 +21,24 @@ import com.fonline.claro.processors.fonline.entity.BillingDetail;
 import com.fonline.claro.processors.fonline.entity.BillingDetailBac;
 import com.fonline.claro.processors.fonline.entity.BillingList;
 import com.fonline.claro.processors.fonline.functions.Functions;
-import org.apache.commons.lang3.SerializationUtils;
-import org.apache.nifi.components.PropertyDescriptor;
-import org.apache.nifi.flowfile.FlowFile;
 import org.apache.nifi.annotation.behavior.ReadsAttribute;
 import org.apache.nifi.annotation.behavior.ReadsAttributes;
 import org.apache.nifi.annotation.behavior.WritesAttribute;
 import org.apache.nifi.annotation.behavior.WritesAttributes;
-import org.apache.nifi.annotation.lifecycle.OnScheduled;
 import org.apache.nifi.annotation.documentation.CapabilityDescription;
 import org.apache.nifi.annotation.documentation.SeeAlso;
 import org.apache.nifi.annotation.documentation.Tags;
+import org.apache.nifi.annotation.lifecycle.OnScheduled;
+import org.apache.nifi.components.PropertyDescriptor;
+import org.apache.nifi.flowfile.FlowFile;
 import org.apache.nifi.flowfile.attributes.CoreAttributes;
+import org.apache.nifi.processor.*;
 import org.apache.nifi.processor.exception.ProcessException;
-import org.apache.nifi.processor.AbstractProcessor;
-import org.apache.nifi.processor.ProcessContext;
-import org.apache.nifi.processor.ProcessSession;
-import org.apache.nifi.processor.ProcessorInitializationContext;
-import org.apache.nifi.processor.Relationship;
-
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -168,8 +161,8 @@ public class FacturaOnline extends AbstractProcessor {
         String inputString = new String(input, StandardCharsets.UTF_8);
 
         int inicio = 0;
-        //int corte = inputString.indexOf("\n");
-        int corte = 150;
+        int corte = inputString.indexOf("\n");
+        //int corte = 150;
         String renglon = "";
         //int despuesCodigo = 0;
         int despuesCodigo = 7;
@@ -251,8 +244,20 @@ public class FacturaOnline extends AbstractProcessor {
                     renglon.contains("FAC110D")) {
                 //despuesCodigo = renglon.indexOf(" ");
                 functions.getFACXXXDValues(renglon, billingDetail, despuesCodigo, billingDetailBac);
+
+                if ((renglon.contains("FAC040D")) && (renglon.substring(despuesCodigo, despuesCodigo +1).equals("N"))) {
+                    paso = 0;
+                    //billingDetail.setWBD_DUE_DATE("Paso:"+paso);
+                }else{
+                    paso ++;
+                }
+                /*
+                if (renglon.contains("FAC040D")) {
+                    billingDetail.setWBD_ACC_ID(renglon.substring(despuesCodigo, despuesCodigo +1));
+                    billingDetail.setWBD_PRINT_DATE(String.valueOf(paso));
+                }*/
                 cargaBac(billingDetail, billingDetailBac);
-                paso++;
+
             } else if (renglon.contains("FAC120D")) {
                 //despuesCodigo = renglon.indexOf(" ");
                 functions.getFAC120DValues(renglon, billingDetail, despuesCodigo, billingDetailBac);

@@ -11,6 +11,8 @@ From: 'an unknown organization'
     License: Apache 2  (http://www.apache.org/licenses/LICENSE-2.0.txt)
   - QDox (https://github.com/paul-hammant/qdox) com.thoughtworks.qdox:qdox:jar:2.0-M8
     License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Project Lombok (https://projectlombok.org) org.projectlombok:lombok:jar:1.18.22
+    License: The MIT License  (https://projectlombok.org/LICENSE)
   - Plexus Cipher: encryption/decryption Component (http://spice.sonatype.org/plexus-cipher) org.sonatype.plexus:plexus-cipher:jar:1.4
     License: Apache Public License 2.0  (http://www.apache.org/licenses/LICENSE-2.0)
   - Plexus Security Dispatcher Component (http://spice.sonatype.org/plexus-sec-dispatcher) org.sonatype.plexus:plexus-sec-dispatcher:jar:1.3
